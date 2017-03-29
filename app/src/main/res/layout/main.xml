@@ -28,5 +28,12 @@
             android:layout_height="wrap_content"
             android:text="Grises"
             android:onClick="onConvertirGrises" />
+        <Button
+            android:id="@+id/btnConvertSepia"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sepia"
+            android:onClick="onConvertirSepia" />
     </LinearLayout>
 </LinearLayout>

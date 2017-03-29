@@ -12,6 +12,7 @@ public class ImgProcesadoNDK extends AppCompatActivity {
     private String tag = "ImgProcesadoNDK";
     private Bitmap bitmapOriginal = null;
     private Bitmap bitmapGrises = null;
+    private Bitmap bitmapSepia = null;
     private ImageView ivDisplay = null;
 
     static {
@@ -19,6 +20,7 @@ public class ImgProcesadoNDK extends AppCompatActivity {
     }
 
     public native void convertirGrises(Bitmap bitmapIn, Bitmap bitmapOut);
+    public native void convertirSepia(Bitmap bitmapIn, Bitmap bitmapOut);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,5 +45,12 @@ public class ImgProcesadoNDK extends AppCompatActivity {
         bitmapGrises = Bitmap.createBitmap(bitmapOriginal.getWidth(), bitmapOriginal.getHeight(), Bitmap.Config.ARGB_8888);
         convertirGrises(bitmapOriginal, bitmapGrises);
         ivDisplay.setImageBitmap(bitmapGrises);
+    }
+
+    public void onConvertirSepia(View v) {
+        Log.i(tag, "Conversion a sepia");
+        bitmapSepia = Bitmap.createBitmap(bitmapOriginal.getWidth(), bitmapOriginal.getHeight(), Bitmap.Config.ARGB_8888);
+        convertirSepia(bitmapOriginal, bitmapSepia);
+        ivDisplay.setImageBitmap(bitmapSepia);
     }
 }
