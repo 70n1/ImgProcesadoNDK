@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -24,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <!--
                 <Button
                     android:id="@+id/btnReset"
@@ -55,7 +56,44 @@
                     android:layout_height="wrap_content"
                     android:onClick="onCapturarFoto"
                     android:text="Capturar foto" />
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/login_button"
+                    facebook:com_facebook_confirm_logout="false"
+                    facebook:com_facebook_tooltip_mode="never_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="121dp" />
+                <TextView
+                    android:id="@+id/tv_facebookLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="Sin autenticar" />
+
+                <Button
+                    android:id="@+id/btnEnviarMensajeFB"
+                    style="?android:buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onEnviarMensajeFB"
+                    android:text="Enviar Mensaje a Facebook"
+                    android:enabled="false"
+                    />
+
+                <Button
+                    android:id="@+id/btnCompartirFoto"
+                    style="?android:buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onCompartirFoto"
+                    android:text="Compartir foto en Facebook"
+                    android:enabled="false"
+                    />
+
             </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
