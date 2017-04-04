@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Debug;
 import android.os.Environment;
@@ -25,8 +27,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.facebook.AccessToken;
@@ -34,6 +39,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -308,4 +316,111 @@ public class MainActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_" + timeStamp + ".jpg");
     }
+    private boolean sePuedePublicar() {
+//
+// compruebo la red
+//
+        if (!this.hayRed()) {
+            Toast.makeText(this, "¿no hay red? No puedo publicar", Toast.LENGTH_LONG).show();
+            return false;
+        }
+//
+// compruebo permisos
+//
+        if (! this.tengoPermisoParaPublicar()) {
+            Toast.makeText(this, "¿no tengo permisos para publicar? Los pido.", Toast.LENGTH_LONG).show();
+            // pedirPermisoParaPublicar();
+            LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList("publish_actions"));
+            return false;
+        }
+        return true;
+    }
+
+
+
+    private boolean tengoPermisoParaPublicar() {
+        AccessToken accessToken = this.obtenerAccessToken();
+        return accessToken != null && accessToken.getPermissions().contains("publish_actions");
+    }
+
+    private boolean hayRed() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+// http://stackoverflow.com/questions/15091591/post-on-facebook-wall-without-showing-dialog-on-android
+// comprobar que estamos conetactos a internet, antes de hacer el login con
+// facebook. Si no: da problemas.
+    } // ()
+
+    public void enviarTextoAFacebook_async (final String textoQueEnviar) {
+//
+// si no se puede publicar no hago nada
+//
+        if ( ! sePuedePublicar() ) {
+            return;
+        }
+//
+// hago la petición a través del API Graph
+//
+        Bundle params = new Bundle();
+        params.putString("message", textoQueEnviar);
+        GraphRequest request = new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/me/feed",
+                params,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        Toast.makeText(context, "Publicación realizada: " + textoQueEnviar, Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        request.executeAsync();
+    } // ()
+
+    public void enviarFotoAFacebook_async (Bitmap image, String comentario) {
+        Log.d("cuandrav.envFotoFBasync", "llamado");
+        if (image == null){
+            Toast.makeText(this, "Enviar foto: la imagen está vacía.", Toast.LENGTH_LONG).show();
+            Log.d("cuandrav.envFotoFBasync", "acabo porque la imagen es null");
+            return;
+        }
+//
+// si no se puede publicar no hago nada
+//
+        if ( ! sePuedePublicar() ) {
+            return;
+        }
+//
+// convierto el bitmap a array de bytes
+//
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//image.recycle ();
+        final byte[] byteArray = stream.toByteArray();
+        try {
+            stream.close();
+        } catch (IOException e) { }
+//
+// hago la petición a traves del Graph API
+//
+        Bundle params = new Bundle();
+        params.putByteArray("source", byteArray); // bytes de la imagen
+        params.putString("caption", comentario); // comentario
+// si se quisiera publicar una imagen de internet: params.putString("url", "{image-url}");
+        GraphRequest request = new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/me/photos",
+                params,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        Toast.makeText(context, "" + byteArray.length + " Foto enviada: " + response.toString(), Toast.LENGTH_LONG).show();
+//textoConElMensaje.setText(response.toString());
+                    }
+                }
+        );
+        request.executeAsync();
+    } // ()
 }
