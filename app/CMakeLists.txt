@@ -18,7 +18,7 @@ add_library( # Sets the name of the library.
     # Provides a relative path to your source file(s).
     # Associated headers in the same location as their source
     # file are automatically included.
-    src/main/cpp/com_imgprocesadondk_ImgProcesadoNDK.c )
+    src/main/cpp/org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK.c )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

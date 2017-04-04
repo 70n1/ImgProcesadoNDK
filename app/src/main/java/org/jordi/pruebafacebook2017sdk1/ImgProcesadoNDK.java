@@ -1,4 +1,4 @@
-package com.imgprocesadondk;
+package org.jordi.pruebafacebook2017sdk1;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
 
 public class ImgProcesadoNDK extends AppCompatActivity {
     private String tag = "ImgProcesadoNDK";
@@ -52,5 +53,8 @@ public class ImgProcesadoNDK extends AppCompatActivity {
         bitmapSepia = Bitmap.createBitmap(bitmapOriginal.getWidth(), bitmapOriginal.getHeight(), Bitmap.Config.ARGB_8888);
         convertirSepia(bitmapOriginal, bitmapSepia);
         ivDisplay.setImageBitmap(bitmapSepia);
+
+
+
     }
 }
