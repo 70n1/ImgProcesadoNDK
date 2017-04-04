@@ -2,38 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="350dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:id="@+id/ivDisplay"/>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <Button
-            android:id="@+id/btnReset"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Original"
-            android:onClick="onResetImagen" />
-        <Button
-            android:id="@+id/btnConvert"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Grises"
-            android:onClick="onConvertirGrises" />
-        <Button
-            android:id="@+id/btnConvertSepia"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sepia"
-            android:onClick="onConvertirSepia" />
-    </LinearLayout>
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!--
+                <Button
+                    android:id="@+id/btnReset"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Original"
+                    android:onClick="onResetImagen" />
+                <Button
+                    android:id="@+id/btnConvert"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grises"
+                    android:onClick="onConvertirGrises" />
+                <Button
+                    android:id="@+id/btnConvertSepia"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sepia"
+                    android:onClick="onConvertirSepia" />
+                    -->
+                <Button
+                    android:id="@+id/btnCapturarFoto"
+                    style="?android:buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onCapturarFoto"
+                    android:text="Capturar foto" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

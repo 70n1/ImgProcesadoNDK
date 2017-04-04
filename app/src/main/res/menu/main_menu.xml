@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/ tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/btnReset"
+        android:title="Original"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/btnConvert"
+        android:title="Grises"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/btnConvertSepia"
+        app:showAsAction="never"
+        android:title="Sepia" />
+
+    <item
+        android:id="@+id/btnMarco1"
+        app:showAsAction="never"
+        android:title="Marco 1" />
+</menu>
