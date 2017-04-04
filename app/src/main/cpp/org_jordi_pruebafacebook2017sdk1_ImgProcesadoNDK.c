@@ -14,7 +14,7 @@ typedef struct {
 } rgba;
 
 /*Conversion a grises por pixel*/
-JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_convertirGrises
+JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_MainActivity_convertirGrises
         (JNIEnv *env, jobject obj, jobject bitmapcolor, jobject bitmapgris) {
     AndroidBitmapInfo infocolor;
     void *pixelscolor;
@@ -81,7 +81,7 @@ JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_con
 }
 
 
-JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_convertirSepia
+JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_MainActivity_convertirSepia
         (JNIEnv *env, jobject obj, jobject bitmapcolor, jobject bitmapgris) {
     AndroidBitmapInfo infocolor;
     void *pixelscolor;
@@ -167,7 +167,7 @@ JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_con
 }
 
 
-JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_marco1
+JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_MainActivity_marco1
         (JNIEnv *env, jobject obj, jobject bitmapcolor, jobject bitmapgris) {
     AndroidBitmapInfo infocolor;
     void *pixelscolor;

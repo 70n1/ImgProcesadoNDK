@@ -27,9 +27,9 @@ import java.util.Date;
 
 import com.facebook.FacebookSdk;
 
-public class ImgProcesadoNDK extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 10001;
-    private String tag = "ImgProcesadoNDK";
+    private String tag = "MainActivity";
     private Bitmap bitmapOriginal = null;
     private Bitmap bitmapGrises = null;
     private Bitmap bitmapSepia = null;

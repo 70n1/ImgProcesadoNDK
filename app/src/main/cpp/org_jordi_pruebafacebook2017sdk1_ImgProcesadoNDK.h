@@ -12,7 +12,7 @@ extern "C" {
  * Method:    convertirGrises
  * Signature: (Landroid/graphics/Bitmap;Landroid/graphics/Bitmap;)V
  */
-JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_convertirGrises
+JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_MainActivity_convertirGrises
   (JNIEnv *, jobject, jobject, jobject);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_con
  * Method:    convertirSepia
  * Signature: (Landroid/graphics/Bitmap;Landroid/graphics/Bitmap;)V
  */
-JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_ImgProcesadoNDK_convertirSepia
+JNIEXPORT void JNICALL Java_org_jordi_pruebafacebook2017sdk1_MainActivity_convertirSepia
   (JNIEnv *, jobject, jobject, jobject);
 
 #ifdef __cplusplus
