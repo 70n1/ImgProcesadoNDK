@@ -25,7 +25,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+import com.facebook.FacebookSdk;
 
 public class ImgProcesadoNDK extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 10001;
