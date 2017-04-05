@@ -89,6 +89,15 @@
                     android:text="Compartir foto en Facebook"
                     android:enabled="false"
                     />
+                <Button
+                    android:id="@+id/btnCompartirFotoSD"
+                    style="?android:buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onCompartirFotoSD"
+                    android:text="Compartir foto en Facebook con ShareDialog"
+                    android:enabled="false"
+                    />
 
             </LinearLayout>
 

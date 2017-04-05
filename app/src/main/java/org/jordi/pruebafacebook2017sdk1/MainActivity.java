@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -46,6 +47,10 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 10001;
@@ -60,10 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_login_fb;
     private Button btnCompartirFoto;
+    private Button btnCompartirFotoSD;
     private Button btnEnviarMensajeFB;
 
     private LoginButton loginButtonOficial;
     private CallbackManager elCallbackManagerDeFacebook;
+
+    private ShareDialog elShareDialog;
 
 
     static {
@@ -103,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
         tv_login_fb = (TextView) findViewById(R.id.tv_facebookLogin);
 
         btnCompartirFoto = (Button) findViewById(R.id.btnCompartirFoto);
+        btnCompartirFotoSD = (Button) findViewById(R.id.btnCompartirFotoSD);
 
-        btnEnviarMensajeFB  = (Button) findViewById(R.id.btnEnviarMensajeFB);
+        btnEnviarMensajeFB = (Button) findViewById(R.id.btnEnviarMensajeFB);
 
         this.elCallbackManagerDeFacebook = CallbackManager.Factory.create();
 // registro un callback para saber cómo ha ido el login
@@ -120,7 +129,9 @@ public class MainActivity extends AppCompatActivity {
                             tv_login_fb.setText("Autenticado: " + profile.getName());
                         }
                         btnCompartirFoto.setEnabled(true);
+                        btnCompartirFotoSD.setEnabled(true);
                         btnEnviarMensajeFB.setEnabled(true);
+                        btnCompartirFoto.setEnabled(true);
                         actualizarDatosFacebook();
                     }
 
@@ -130,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
                         tv_login_fb.setText("Sin autenticar.");
 
                         btnCompartirFoto.setEnabled(false);
+                        btnCompartirFotoSD.setEnabled(false);
                         btnEnviarMensajeFB.setEnabled(false);
+                        btnCompartirFoto.setEnabled(false);
                         actualizarDatosFacebook();
                     }
 
@@ -145,11 +158,30 @@ public class MainActivity extends AppCompatActivity {
                         ;
 
                         btnCompartirFoto.setEnabled(false);
+                        btnCompartirFotoSD.setEnabled(false);
                         btnEnviarMensajeFB.setEnabled(false);
+                        btnCompartirFoto.setEnabled(false);
                         actualizarDatosFacebook();
                     }
                 });
         actualizarDatosFacebook();
+
+        this.elShareDialog = new ShareDialog(this);
+        this.elShareDialog.registerCallback(this.elCallbackManagerDeFacebook, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Toast.makeText(context, "Sharer onSuccess()", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(context, "Sharer onError(): " + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private AccessToken obtenerAccessToken() {
@@ -165,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
 //
             this.btnCompartirFoto.setEnabled(false);
             btnEnviarMensajeFB.setEnabled(false);
+            btnCompartirFoto.setEnabled(false);
+            btnCompartirFotoSD.setEnabled(false);
             this.tv_login_fb.setText("No autenticado");
             return;
         }
@@ -174,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("cuandrav.actualizarVent", "hay sesion habilito");
         this.tv_login_fb.setEnabled(true);
         btnEnviarMensajeFB.setEnabled(true);
+        btnCompartirFotoSD.setEnabled(true);
+        btnCompartirFoto.setEnabled(true);
 //
 // averiguo los datos básicos del usuario acreditado
 //
@@ -316,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_" + timeStamp + ".jpg");
     }
+
     private boolean sePuedePublicar() {
 //
 // compruebo la red
@@ -327,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 //
 // compruebo permisos
 //
-        if (! this.tengoPermisoParaPublicar()) {
+        if (!this.tengoPermisoParaPublicar()) {
             Toast.makeText(this, "¿no tengo permisos para publicar? Los pido.", Toast.LENGTH_LONG).show();
             // pedirPermisoParaPublicar();
             LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList("publish_actions"));
@@ -335,7 +372,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
 
 
     private boolean tengoPermisoParaPublicar() {
@@ -353,11 +389,11 @@ public class MainActivity extends AppCompatActivity {
 // facebook. Si no: da problemas.
     } // ()
 
-    public void enviarTextoAFacebook_async (final String textoQueEnviar) {
+    public void enviarTextoAFacebook_async(final String textoQueEnviar) {
 //
 // si no se puede publicar no hago nada
 //
-        if ( ! sePuedePublicar() ) {
+        if (!sePuedePublicar()) {
             return;
         }
 //
@@ -379,9 +415,9 @@ public class MainActivity extends AppCompatActivity {
         request.executeAsync();
     } // ()
 
-    public void enviarFotoAFacebook_async (Bitmap image, String comentario) {
+    public void enviarFotoAFacebook_async(Bitmap image, String comentario) {
         Log.d("cuandrav.envFotoFBasync", "llamado");
-        if (image == null){
+        if (image == null) {
             Toast.makeText(this, "Enviar foto: la imagen está vacía.", Toast.LENGTH_LONG).show();
             Log.d("cuandrav.envFotoFBasync", "acabo porque la imagen es null");
             return;
@@ -389,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
 //
 // si no se puede publicar no hago nada
 //
-        if ( ! sePuedePublicar() ) {
+        if (!sePuedePublicar()) {
             return;
         }
 //
@@ -401,7 +437,8 @@ public class MainActivity extends AppCompatActivity {
         final byte[] byteArray = stream.toByteArray();
         try {
             stream.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
 //
 // hago la petición a traves del Graph API
 //
@@ -423,4 +460,39 @@ public class MainActivity extends AppCompatActivity {
         );
         request.executeAsync();
     } // ()
+
+    public void onEnviarMensajeFB(View view) {
+        enviarTextoAFacebook_async("Texto de prueba para compartir en facebook (AMARTIN)");
+    }
+
+    public void onCompartirFoto(View view) {
+        enviarFotoAFacebook_async(((BitmapDrawable) ivDisplay.getDrawable()).getBitmap(), "Enviando foto a Facebook (AMARTIN)");
+    }
+
+    private void publicarFotoConShareDialog() {
+        // https://developers.facebook.com/docs/android/share -> Using the Share Dialog
+        if (!puedoUtilizarShareDialogParaPublicarFoto()) {
+            return;
+        }
+
+        // // cojo una imagen directamente de los recursos
+        // para publicarla //
+        //
+
+        //Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_logo);
+        Bitmap image = ((BitmapDrawable) ivDisplay.getDrawable()).getBitmap();
+        // // monto la petición //
+        SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
+        SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+        this.elShareDialog.show(content);
+    } // ()
+
+    private boolean puedoUtilizarShareDialogParaPublicarFoto() {
+        return ShareDialog.canShow(SharePhotoContent.class);
+    }
+
+
+    public void onCompartirFotoSD(View view) {
+        publicarFotoConShareDialog();
+    }
 }
